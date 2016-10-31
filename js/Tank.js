@@ -89,7 +89,6 @@ function $(selector, context) {
   }
 }
 
-
 function getAttr(el, k) {
   if(el) {
     var v = el.getAttribute[k] ? el.getAttribute[k] : null;
