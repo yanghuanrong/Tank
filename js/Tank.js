@@ -1,81 +1,4 @@
-var map = {
-  level_1: {
-    gkType: [
-      0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-      0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-      0, 0, 1, 1, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0,
-      0, 0, 1, 1, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0,
-      0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 2, 2, 1, 1, 0, 0,
-      0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 2, 2, 1, 1, 0, 0,
-      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0,
-      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0,
-      3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 1, 1, 3, 3, 1, 1, 2, 2,
-      3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 1, 1, 3, 3, 1, 1, 2, 2,
-      3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 2, 2, 0, 0, 3, 3, 0, 0, 0, 0,
-      3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 2, 2, 0, 0, 3, 3, 0, 0, 0, 0,
-      0, 0, 1, 1, 1, 1, 1, 1, 3, 3, 3, 3, 3, 3, 2, 2, 0, 0, 0, 0, 3, 3, 1, 1, 0, 0,
-      0, 0, 1, 1, 1, 1, 1, 1, 3, 3, 3, 3, 3, 3, 2, 2, 0, 0, 0, 0, 3, 3, 1, 1, 0, 0,
-      0, 0, 0, 0, 0, 0, 2, 2, 3, 3, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0,
-      0, 0, 0, 0, 0, 0, 2, 2, 3, 3, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0,
-      2, 2, 1, 1, 0, 0, 2, 2, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0,
-      2, 2, 1, 1, 0, 0, 2, 2, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0,
-      0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 2, 2, 1, 1, 0, 0,
-      0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 2, 2, 1, 1, 0, 0,
-      0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-      0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0,
-      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 7, 7, 7, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0,
-      0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 7, 9, 0, 7, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0,
-      0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 7, 0, 0, 7, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0
-    ],
-    tankType: [1, 1, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0]
-  }
-};
-
-function game() {
-  this.toMap();
-}
-//创建地图
-game.prototype.toMap = function() {
-  this.gk = map.level_1.gkType;
-  for(var i = 0; i < this.gk.length; i++) {
-    var ele = document.createElement('span');
-    ele.style.position = 'absolute';
-    ele.style.left = i % 26 * 16 + 'px';
-    ele.style.top = (parseInt(i / 26)) * 16 + 'px';
-    switch(this.gk[i]) {
-      case 0:
-        ele.className = 'bare';
-        ele.type = 0;
-        break;
-      case 1:
-        ele.className = 'wall';
-        ele.type = 1;
-        break;
-      case 2:
-        ele.className = 'iron';
-        ele.type = 2;
-        break;
-      case 3:
-        ele.className = 'flower';
-        ele.type = 3;
-        break;
-      case 7:
-        ele.className = 'wall';
-        ele.type = 7;
-        break;
-      case 9:
-        ele.id = 'lair';
-        ele.type = 9;
-        break;
-    }
-
-    $('#left').appendChild(ele);
-  }
-};
-
 /*-------------------------创建我方坦克--------------------------*/
-
 function $(selector, context) {
   context = context || document;
   if(selector.indexOf(" ") !== -1) {
@@ -121,17 +44,11 @@ function setCss(el, k, v) {
   }
 }
 
-var MyGlobal = {
-  mapWidth: 416,
-  mapHeight: 416,
-  width: 448,
-  height: 512
-};
-
 //子弹对象
-var Bullet = function(dir) {
-  this.direction = dir ? dir : 'up';
-  this.speed = 5;
+var Bullet = function(obj, dir) {
+  this.obj = obj; //当前发射子弹的对象
+  this.direction = dir ? dir : 'up'; //子弹发射的方向
+  this.speed = 5; //子弹发射的速度
   var factor = 0;
   this.tid = null;
   this.activeState = 0;
@@ -163,15 +80,14 @@ var Bullet = function(dir) {
 };
 
 Bullet.prototype.move = function() {
-
   var bullet = this.el;
   var dir = this.direction;
   var xpos = getCss(bullet, 'left') ? getCss(bullet, 'left') : 0;
   var ypos = getCss(bullet, 'top') ? getCss(bullet, 'top') : 0;
   xpos = parseInt(xpos);
   ypos = parseInt(ypos);
-  var mx = MyGlobal.mapWidth - 8;
-  var my = MyGlobal.mapHeight - 8;
+  var mx = $('#left').offsetWidth - 8;
+  var my = $('#left').offsetHeight - 8;
   var stop = false;
   switch(dir) {
     case 'up':
@@ -256,12 +172,13 @@ Bullet.prototype.blast = function(reason) {
 
   clearTimeout(this.tid);
   this.tid = null;
-
+  return this.obj.bullet = false;
 };
 
 //坦克对象
 var Tank = function(id, dir, x, y) {
   this.el = $(id);
+  this.bullet = false;
   this.direction = dir ? dir : 'up';
   this.tid = null;
   this.speed = 10;
@@ -331,8 +248,8 @@ Tank.prototype.move = function(dir) {
   var ypos = getCss(tank, 'top') ? getCss(tank, 'top') : 0;
   xpos = parseInt(xpos);
   ypos = parseInt(ypos);
-  var mx = MyGlobal.mapWidth - 32;
-  var my = MyGlobal.mapHeight - 32;
+  var mx = $('#left').offsetWidth - 32;
+  var my = $('#left').offsetHeight - 32;
   switch(dir) {
     case 'up':
       ypos <= 0 ? 0 : ypos--;
@@ -369,16 +286,19 @@ Tank.prototype.stop = function() {
 };
 
 Tank.prototype.fire = function() {
-  var bullet = new Bullet(this.direction);
-  var l = (this.x + 12) + 'px';
-  var t = (this.y + 12) + 'px'
-  var el = bullet.el;
-  setCss(el, 'top', t);
-  setCss(el, 'left', l);
-  bullet.y = this.y + 12;
-  bullet.x = this.x + 12;
-  $('#left').appendChild(el);
-  bullet.move();
+  if(!this.bullet) {
+    this.bullet=true;
+    var bullet = new Bullet(this, this.direction);
+    var l = (this.x + 12) + 'px';
+    var t = (this.y + 12) + 'px'
+    var el = bullet.el;
+    setCss(el, 'top', t);
+    setCss(el, 'left', l);
+    bullet.y = this.y + 12;
+    bullet.x = this.x + 12;
+    $('#left').appendChild(el);
+    bullet.move();
+  }
 };
 
 //实际应用
@@ -414,15 +334,19 @@ document.onkeydown = function(evt) {
   }
   if(dir)
     tank.move(dir);
+
   if(charCode == '106' || keyCode == '74') {
     tank.fire();
+    
   }
+
   //evt.preventDefault();
   //return false;
 };
 document.onkeyup = function(evt) {
   tank.stop();
 };
+
 document.onkeypress = function(evt) {
   evt = (evt) ? evt : window.event;
   var keyCode = evt.keyCode;
@@ -436,9 +360,13 @@ document.onkeypress = function(evt) {
   }
   if(dir)
     tank.move(dir);
-  if(charCode == '106' || keyCode == '74') {
-    tank.fire();
-  }
+
+  //if(charCode == '106' || keyCode == '74') {
+  //  if(!$('#me').bullet) {
+  //    tank.fire();
+  //  }
+  //}
+
   //evt.preventDefault();
   return false;
 };

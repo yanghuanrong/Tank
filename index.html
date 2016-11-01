@@ -18,55 +18,10 @@
 				111
 			</div>
 		</div>
-		<span id="bg" style="width: 200px; background: #F00; display: block;">11</span>
-		<!--<script src="js/Tank.js" type="text/javascript" charset="utf-8"></script>-->
+		<script src="js/map.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/Tank.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
-			function jQuery(selector, context) {
-				context = context || document;
-				if(selector.indexOf(" ") !== -1) {
-					this.obj = context.querySelectorAll(selector);
-				} else if(selector.charAt(0) === "#") {
-					this.obj = document.getElementById(selector.slice(1))
-				} else if(selector.charAt(0) === ".") {
-					this.obj = context.getElementsByClassName(selector.slice(1));
-					console.log(this.obj)
-				} else {
-					this.obj = context.getElementsByTagName(selector);
-				}
-			}
-			jQuery.prototype = {
-				width: function() {
-					return this.obj.offsetWidth
-				}
-			}
-			function $(dom) {
-				return new jQuery(dom);
-			}
-
-			console.log($('#bg').innerHTML)  //undefined
-			console.log($('#right').width())  // 80
-
-			//				function _$(obj) {
-			//					this._obj = document.getElementById(obj);
-			//				}
-			//
-			//				_$.prototype = {
-			//					trim: function(str) { //去掉字符窜左右空格
-			//						return str.replace(/(^\s*)|(\s*$)/g, '');
-			//					},
-			//
-			//					text: function(str) { //获取innerText
-			//						return this._obj.innerText;
-			//					}
-			//
-			//				}
-			//
-			//				
-			//
-			//
-			//			alert(_$('right').text());
-
-			//            new game()
+			           new game()
 		</script>
 	</body>
 
