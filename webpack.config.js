@@ -1,33 +1,35 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
     entry: './src/main.js',
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'main.js'
+        filename: 'js/main.js'
     },
     plugins: [
         new HtmlWebpackPlugin({
             filename: 'index.html',
             template: 'src/index.html'
-        })
+        }),
+        new CleanWebpackPlugin(['dist'])
     ],
+
     module: {
         rules: [{
-            test: /\.less$/,
-            use: [
-                { loader: "style-loader" },
-                { loader: "css-loader" },
-                { loader: "less-loader" }
-            ]
-        }, {
             test: /\.css/,
-            use: [
-                { loader: "style-loader" },
-                { loader: "css-loader" }
-            ]
-        }]
+            use: ["style-loader", "css-loader"]
+        }, {
+            test: /\.(png|jpg|gif)$/,
+            use: [{
+                loader: "url-loader",
+                options: {
+                    limit: 10000,
+                    name: "images/[name].[ext]"
+                }
+            }]
+        },]
     },
     devServer: {
         contentBase: path.join(__dirname, "dist"),
