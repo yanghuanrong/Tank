@@ -16,6 +16,7 @@ p.info{width:496px; height:40px; margin:20px auto; line-height:20px;}
 
 #main{width:496px; height:416px; margin:20px auto; position:relative; background-color:#000; overflow:hidden;}
 #left,#right{ width:416px; height:416px; float:left; background:#000;position:relative;}
+#left span{ color: #F00}
 #right{width:80px;background-color: rgb(127, 127, 127);}
 
 .tank { background-image: url(../images/Tank.png); background-repeat: no-repeat; overflow: hidden; position: absolute; width: 32px; height: 32px; z-index: 3; top:384px; left:128px; }
