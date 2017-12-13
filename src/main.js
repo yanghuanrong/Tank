@@ -1,104 +1,61 @@
 import './style/style.css';
 import map from './js/map';
 import tank from './js/tank';
-/**
- * 渲染当前关卡的地图。
- * @param {json} 接收地图数据.
- * @param {number} 接收目前正在玩的关卡。
- */
-class drawMap {
-    constructor(map,gk){
-        const gkType = map[`level_${gk}`].gkType;
-        let el = document.createDocumentFragment();
-        for(let crs in gkType){
-            for(let col in gkType[crs]){
-                let ele = document.createElement('span');
-                ele.style.position = 'absolute';
-                ele.style.left = `${col * 16}px`;
-                ele.style.top = `${crs * 16}px`;
-                switch(gkType[crs][col]) {
-                    case 0:
-                        ele.className = 'bare';
-                        ele.type = 0;
-                        break;
-                    case 1:
-                        ele.className = 'wall';
-                        ele.type = 1;
-                        break;
-                    case 2:
-                        ele.className = 'iron';
-                        ele.type = 2;
-                        break;
-                    case 3:
-                        ele.className = 'flower';
-                        ele.type = 3;
-                        break;
-                    case 7:
-                        ele.className = 'wall';
-                        ele.type = 7;
-                        break;
-                    case 9:
-                        ele.id = 'lair';
-                        ele.type = 9;
-                        break;
-                }
-                el.appendChild(ele);
-            }
+
+class Game{
+    constructor(){
+        this.key = {};  // 键盘按键对象
+        this.level = 1; // 当前正在游戏的关卡
+    }
+    //初始化
+    init(){
+        new map(this.level);
+    }
+    //游戏开始
+    GameStart(){
+        this.init();
+        this.p1 = new tank('#me');
+        this.time = setInterval(() => {
+            this.updateGame();
+        },32)
+    }
+    //键盘按下
+    keyDown(){
+        document.onkeydown = e => {
+            e.preventDefault();
+            this.key[e.keyCode] = true;
+            return false
         }
-        document.querySelector('#left').appendChild(el);
+    }
+    //键盘抬起
+    keyUp(){
+        document.onkeyup = e => {
+            e.preventDefault();
+            this.key[e.keyCode] = false;
+        }
+    }
+    //玩家一控制
+    OnePlayer(){
+        if(this.key['87']){
+            this.p1.move('up');
+        }else if(this.key['68']){
+            this.p1.move('right');
+        }else if(this.key['83']){
+            this.p1.move('down');
+        }else if(this.key['65']){
+            this.p1.move('left');
+        }
+    }
+    //玩家控制
+    ctrlPlayers(){
+        this.keyDown();
+        this.keyUp();
+        this.OnePlayer();
+    }
+    updateGame(){
+        this.ctrlPlayers();
     }
 }
 
-new drawMap(map,1);
-let p1 = new tank('#me');
-
-/**
- * 坦克与墙的碰撞检测。
- * @param {object} 目标坦克.
- * @return {json} 返回方向是否可走。
- */
-function axis(obj,dir) {
-    let mapChunk = document.querySelector('#left').getElementsByTagName('span');
-    for(let i = 0; i<mapChunk.length; i++){
-        if(mapChunk[i].offsetTop == obj.y && mapChunk[i].offsetLeft == obj.x){
-            switch (dir){
-                case 'up':
-                    return mapChunk[i-26].type && mapChunk[i-25].type ? false : true;
-                    break;
-                case 'down':
-                    break;
-                case 'left':
-                    return mapChunk[i-1].type && mapChunk[i+25].type ? false : true;
-                    break;
-                case 'right':
-                    return mapChunk[i+2].type && mapChunk[i+28].type ? false : true
-                    break;
-            }
-        }
-    }
-}
-
-//p1玩家控制
-function dir(dir) {
-    console.log(dir)
-    switch (dir){
-        case 87:
-            p1.moveStar('up',axis(p1,'up'));
-            break;
-        case 68:
-            p1.moveStar('right',axis(p1,'right'));
-            break;
-        case 63:
-            p1.moveStar('down',axis(p1));
-            break;
-        case 65:
-            p1.moveStar('left',axis(p1,'left'));
-            break;
-    };
-}
-document.addEventListener('keydown',e => {
-    dir(e.keyCode);
-});
-document.addEventListener('keyup',()=> {
-    p1.moveStop();
-});
+const TKGame = new Game();
+TKGame.GameStart();
