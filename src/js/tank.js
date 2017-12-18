@@ -15,6 +15,7 @@ export default class tank {
         this.obj = this.created(id,className,x,y);
         this.speed = 2; //移动速度
         this.animation = null;
+        this.play = false;
     };
     /**
      * 创建坦克元素，
@@ -54,31 +55,55 @@ export default class tank {
             default:
                 break;
         }
+        if(this.play){
+            this.animationStar();
+        }else {
+            this.animationStop();
+        }
     }
 
     /**
      * 坦克移动方向动画
      */
-    animationStar(positions){
+    animationStar(){
+        if(this.animation){
+            return;
+        }
+
+        let positions;
         let index = 0;
+
+        switch (this.dir){
+            case 'left':
+                positions = this.l[this.status];
+                break;
+            case 'right':
+                positions = this.r[this.status];
+                break;
+            case 'up':
+                positions = this.t[this.status];
+                break;
+            case 'down':
+                positions = this.b[this.status];
+                break;
+        }
+
         let run = () => {
-            let time;
-            clearTimeout(time);
             this.obj.style.backgroundPosition = `${positions[index]}px 0`;
             index++;
             if(index >= positions.length){
                 index = 0;
             }
-            this.animation = setTimeout(run,80);
+            this.animation = setTimeout(run,30);
         };
         run();
     }
-
     /**
      * 清空坦克移动动画
      */
     animationStop(){
-        clearTimeout(this.animation);
+        clearInterval(this.animation);
+        this.animation = null;
     }
     /**
      * 左移动
@@ -92,7 +117,7 @@ export default class tank {
                 this.obj.style.left = this.obj.offsetLeft + this.speed + 'px';
             }
         }
-        this.animationStar(this.l[this.status])
+        this.dir = 'left';
     }
 
     /**
@@ -107,7 +132,7 @@ export default class tank {
                 this.obj.style.left = this.obj.offsetLeft - this.speed + 'px';
             }
         }
-        this.animationStar(this.r[this.status])
+        this.dir = 'right';
     }
 
     /**
@@ -122,7 +147,7 @@ export default class tank {
                 this.obj.style.top = this.obj.offsetTop + this.speed + 'px';
             }
         }
-        this.animationStar(this.t[this.status])
+        this.dir = 'up';
     }
 
     /**
@@ -137,7 +162,7 @@ export default class tank {
                 this.obj.style.top = this.obj.offsetTop - this.speed + 'px';
             }
         }
-        this.animationStar(this.b[this.status])
+        this.dir = 'down';
     }
 
     /**

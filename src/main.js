@@ -17,7 +17,7 @@ const P1_TANK = {
     // 右移动时的动画
     r: [[-896, -1344], [-928, -1376]],
     // 下移动时的动画
-    b: [[-1792, -2240], [-1826, -2272]],
+    b: [[-1792, -2240], [-1825, -2273]],
     // 左移动时的动画
     l: [[-2688, -3136], [-2720, -3168]],
 };
@@ -47,6 +47,7 @@ class Game {
         document.onkeydown = e => {
             e.preventDefault();
             this.key[e.keyCode] = true;
+            this.p1.play = true;
             return false
         }
     }
@@ -56,6 +57,7 @@ class Game {
         document.onkeyup = e => {
             e.preventDefault();
             this.key[e.keyCode] = false;
+            this.p1.play =false;
         }
     }
 
@@ -69,7 +71,7 @@ class Game {
             this.p1.move('down');
         } else if (this.key['65']) {
             this.p1.move('left');
-        }else{
+        }else {
             this.p1.animationStop();
         }
     }
