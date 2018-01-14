@@ -20,5 +20,7 @@ p.info{width:496px; height:40px; margin:20px auto; line-height:20px;}
 #right{width:80px;background-color: rgb(127, 127, 127);}
 
 .tank { background-image: url(../images/Tank.png); background-repeat: no-repeat; overflow: hidden; position: absolute; width: 32px; height: 32px; z-index: 3; top:384px; left:128px; }
+
+
 .bullet { background-image: url(../images/bullet.gif); width: 8px; height: 8px; position: absolute; z-index: 4; background-repeat: no-repeat; }
 .Boom { background-image: url(../images/Boom.png); width: 64px; height: 64px; position: absolute; z-index: 4; }

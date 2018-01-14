@@ -1,3 +1,4 @@
+import bullet from './bullet'
 /**
  * 坦克的控制类。
  * @param {string} 目标坦克.
@@ -55,7 +56,7 @@ export default class tank {
             default:
                 break;
         }
-        if(this.play){
+        if(this.animation == null){
             this.animationStar();
         }else {
             this.animationStop();
@@ -66,10 +67,6 @@ export default class tank {
      * 坦克移动方向动画
      */
     animationStar(){
-        if(this.animation){
-            return;
-        }
-
         let positions;
         let index = 0;
 
@@ -94,7 +91,7 @@ export default class tank {
             if(index >= positions.length){
                 index = 0;
             }
-            this.animation = setTimeout(run,30);
+            this.animation = setTimeout(run,2);
         };
         run();
     }
@@ -201,4 +198,6 @@ export default class tank {
         }
         return true;
     }
+
+
 }
