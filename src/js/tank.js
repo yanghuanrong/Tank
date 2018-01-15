@@ -1,14 +1,40 @@
+import bullet from './bullet'
 /**
  * 坦克的控制类。
  * @param {string} 目标坦克.
  */
 export default class tank {
-    constructor(id) {
-        this.obj = document.querySelector(id);
-        this.speed = 2;                //移动速度
-        this.oParent = document.querySelector('#left');
+    constructor({life,dir,id,parent,className,status,x,y,t,r,b,l}) {
+        this.life = life;
+        this.dir = dir;
+        this.status = status;
+        this.t = t;
+        this.r = r;
+        this.b = b;
+        this.l = l;
+        this.oParent = document.querySelector(`#${parent}`);
+        this.obj = this.created(id,className,x,y);
+        this.speed = 2; //移动速度
+        this.animation = null;
+        this.play = false;
     };
-
+    /**
+     * 创建坦克元素，
+     * @param {string} id 元素标识
+     * @param {string} className 元素样式
+     * @param {number} x 坐标
+     * @param {number} y 坐标
+     * @return {object} 返回坦克dom对象
+     */
+    created(id,className,x,y){
+        let obj = document.createElement('div');
+        obj.id = id;
+        obj.className = className;
+        obj.style.top = y + 'px';
+        obj.style.left = x + 'px';
+        this.oParent.appendChild(obj);
+        return obj;
+    };
     /**
      * 移动
      * @param {string} 移动方向
@@ -30,9 +56,55 @@ export default class tank {
             default:
                 break;
         }
+        if(this.animation == null){
+            this.animationStar();
+        }else {
+            this.animationStop();
+        }
     }
 
-    //左移动
+    /**
+     * 坦克移动方向动画
+     */
+    animationStar(){
+        let positions;
+        let index = 0;
+
+        switch (this.dir){
+            case 'left':
+                positions = this.l[this.status];
+                break;
+            case 'right':
+                positions = this.r[this.status];
+                break;
+            case 'up':
+                positions = this.t[this.status];
+                break;
+            case 'down':
+                positions = this.b[this.status];
+                break;
+        }
+
+        let run = () => {
+            this.obj.style.backgroundPosition = `${positions[index]}px 0`;
+            index++;
+            if(index >= positions.length){
+                index = 0;
+            }
+            this.animation = setTimeout(run,2);
+        };
+        run();
+    }
+    /**
+     * 清空坦克移动动画
+     */
+    animationStop(){
+        clearInterval(this.animation);
+        this.animation = null;
+    }
+    /**
+     * 左移动
+     */
     moveLeft() {
         if (this.obj.offsetLeft <= 0) {
             this.obj.style.left = 0;
@@ -42,9 +114,12 @@ export default class tank {
                 this.obj.style.left = this.obj.offsetLeft + this.speed + 'px';
             }
         }
+        this.dir = 'left';
     }
 
-    //右移动
+    /**
+     * 右移动
+     */
     moveRight() {
         if (this.obj.offsetLeft >= this.oParent.offsetWidth - this.obj.offsetWidth) {
             this.obj.style.left = this.oParent.offsetWidth - this.obj.offsetWidth + 'px';
@@ -54,9 +129,12 @@ export default class tank {
                 this.obj.style.left = this.obj.offsetLeft - this.speed + 'px';
             }
         }
+        this.dir = 'right';
     }
 
-    //上移动
+    /**
+     * 上移动
+     */
     moveUp() {
         if (this.obj.offsetTop <= 0) {
             this.obj.style.top = 0;
@@ -64,14 +142,14 @@ export default class tank {
             this.obj.style.top = this.obj.offsetTop - this.speed + 'px';
             if (this.axis()) {
                 this.obj.style.top = this.obj.offsetTop + this.speed + 'px';
-                return true;
-            } else {
-                return false;
             }
         }
+        this.dir = 'up';
     }
 
-    //下移动
+    /**
+     * 下移动
+     */
     moveDown() {
         if (this.obj.offsetTop >= this.oParent.offsetHeight - this.obj.offsetHeight) {
             this.obj.style.top = this.oParent.offsetHeight - this.obj.offsetHeight + 'px';
@@ -81,11 +159,12 @@ export default class tank {
                 this.obj.style.top = this.obj.offsetTop - this.speed + 'px';
             }
         }
+        this.dir = 'down';
     }
 
     /**
      * 坦克与墙的碰撞检测。
-     * @return {json} 返回方向是否可走。
+     * @return {Boolean} true 碰上 false 没碰
      */
     axis() {
         const wall = document.querySelectorAll('.wall');
@@ -99,7 +178,10 @@ export default class tank {
         return false;
     }
 
-    //碰撞检测
+    /**
+     * 碰撞检测。
+     * @return {Boolean}
+     */
     casks(obj1) {
         const L1 = obj1.offsetLeft;
         const T1 = obj1.offsetTop;
@@ -116,4 +198,6 @@ export default class tank {
         }
         return true;
     }
+
+
 }
