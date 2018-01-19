@@ -47,7 +47,6 @@ class Game {
         document.onkeydown = e => {
             e.preventDefault();
             this.key[e.keyCode] = true;
-            this.p1.play = true;
             return false
         }
     }
@@ -57,7 +56,6 @@ class Game {
         document.onkeyup = e => {
             e.preventDefault();
             this.key[e.keyCode] = false;
-            this.p1.play = false;
         }
     }
 
@@ -75,7 +73,7 @@ class Game {
             this.p1.animationStop();
         }
         if(this.key['74']){
-            this.p1.bullet();
+          this.p1.bullets()
         }
     }
 

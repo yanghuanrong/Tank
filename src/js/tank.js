@@ -3,7 +3,7 @@ import bullet from './bullet'
  * 坦克的控制类。
  * @param {string} 目标坦克.
  */
-export default class tank {
+export default class tank{
     constructor({life,dir,id,parent,className,status,x,y,t,r,b,l}) {
         this.life = life;
         this.dir = dir;
@@ -16,7 +16,7 @@ export default class tank {
         this.obj = this.created(id,className,x,y);
         this.speed = 2; //移动速度
         this.animation = null;
-        this.play = false;
+        this.bulletNum = 1;
     };
     /**
      * 创建坦克元素，
@@ -34,6 +34,11 @@ export default class tank {
         obj.style.left = x + 'px';
         this.oParent.appendChild(obj);
         return obj;
+    };
+    bullets(){
+      setTimeout(()=>{
+        console.log(this.bullet++)
+      },100)
     };
     /**
      * 移动
