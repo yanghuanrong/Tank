@@ -56,6 +56,12 @@ class Game {
         document.onkeyup = e => {
             e.preventDefault();
             this.key[e.keyCode] = false;
+            if(e.keyCode == '74'){
+              setTimeout(() => {
+                clearInterval(this.p1.bullet)
+                this.p1.bullet = null
+              },1000)
+            }
         }
     }
 
