@@ -1,6 +1,6 @@
 import '../style/style.css'
-import Map from './Map'
-import Tank from './Tank'
+import Map from './map'
+import Tank from './tank'
 
 // 初始化p1玩家数据
 const P1_TANK = {

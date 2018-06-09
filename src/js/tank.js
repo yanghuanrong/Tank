@@ -1,10 +1,12 @@
-import Bullet from './Bullet'
+import { wrap, wrapL, wrapH, wrapW, wrapT } from './utilis'
+import Axis from './axis'
+import Bullet from './bullet'
 /**
  * 坦克的控制类。
  * @param {string} 目标坦克.
  */
 export default class tank {
-  constructor ({life, dir, id, parent, className, status, x, y, t, r, b, l}) {
+  constructor ({life, dir, id, className, status, x, y, t, r, b, l}) {
     this.life = life
     this.dir = dir
     this.status = status
@@ -12,7 +14,6 @@ export default class tank {
     this.r = r // 移动动画
     this.b = b // 移动动画
     this.l = l // 移动动画
-    this.oParent = document.querySelector(`#${parent}`)
     this.obj = this.created(id, className, x, y)
     this.speed = 2 // 移动速度
     this.animation = null
@@ -33,7 +34,7 @@ export default class tank {
     obj.className = className
     obj.style.top = y + 'px'
     obj.style.left = x + 'px'
-    this.oParent.appendChild(obj)
+    wrap.appendChild(obj)
     return obj
   }
   bullets () {
@@ -96,7 +97,7 @@ export default class tank {
         break
     }
 
-    let run = () => {
+    const run = () => {
       this.obj.style.backgroundPosition = `${positions[index]}px 0`
       index++
       if (index >= positions.length) {
@@ -117,13 +118,13 @@ export default class tank {
      * 左移动
      */
   moveLeft () {
-    if (this.obj.offsetLeft <= 0) {
+    if (this.obj.offsetLeft <= wrapL) {
       this.obj.style.left = 0
     } else {
       this.obj.style.left = this.obj.offsetLeft - this.speed + 'px'
-      if (this.axis()) {
+      new Axis(this.obj).then(() => {
         this.obj.style.left = this.obj.offsetLeft + this.speed + 'px'
-      }
+      })
     }
     this.dir = 'left'
   }
@@ -132,13 +133,13 @@ export default class tank {
      * 右移动
      */
   moveRight () {
-    if (this.obj.offsetLeft >= this.oParent.offsetWidth - this.obj.offsetWidth) {
-      this.obj.style.left = this.oParent.offsetWidth - this.obj.offsetWidth + 'px'
+    if (this.obj.offsetLeft >= wrapW - this.obj.offsetWidth) {
+      this.obj.style.left = wrapW - this.obj.offsetWidth + 'px'
     } else {
       this.obj.style.left = this.obj.offsetLeft + this.speed + 'px'
-      if (this.axis()) {
+      new Axis(this.obj).then(() => {
         this.obj.style.left = this.obj.offsetLeft - this.speed + 'px'
-      }
+      })
     }
     this.dir = 'right'
   }
@@ -147,13 +148,13 @@ export default class tank {
      * 上移动
      */
   moveUp () {
-    if (this.obj.offsetTop <= 0) {
+    if (this.obj.offsetTop <= wrapT) {
       this.obj.style.top = 0
     } else {
       this.obj.style.top = this.obj.offsetTop - this.speed + 'px'
-      if (this.axis()) {
+      new Axis(this.obj).then(() => {
         this.obj.style.top = this.obj.offsetTop + this.speed + 'px'
-      }
+      })
     }
     this.dir = 'up'
   }
@@ -162,54 +163,14 @@ export default class tank {
      * 下移动
      */
   moveDown () {
-    if (this.obj.offsetTop >= this.oParent.offsetHeight - this.obj.offsetHeight) {
-      this.obj.style.top = this.oParent.offsetHeight - this.obj.offsetHeight + 'px'
+    if (this.obj.offsetTop >= wrapH - this.obj.offsetHeight) {
+      this.obj.style.top = wrapH - this.obj.offsetHeight + 'px'
     } else {
       this.obj.style.top = this.obj.offsetTop + this.speed + 'px'
-      if (this.axis()) {
+      new Axis(this.obj).then(() => {
         this.obj.style.top = this.obj.offsetTop - this.speed + 'px'
-      }
+      })
     }
     this.dir = 'down'
-  }
-
-  /**
-     * 坦克与墙的碰撞检测。
-     * @return {Boolean} true 碰上 false 没碰
-     */
-  axis () {
-    const wall = document.querySelectorAll('.wall')
-    const iron = document.querySelectorAll('.iron')
-    const allWall = [
-      ...wall,
-      ...iron
-    ]
-    for (let item of allWall) {
-      if (this.casks(item)) {
-        return true
-      }
-    }
-    return false
-  }
-
-  /**
-     * 碰撞检测。
-     * @return {Boolean}
-     */
-  casks (obj1) {
-    const L1 = obj1.offsetLeft
-    const T1 = obj1.offsetTop
-    const R1 = L1 + obj1.offsetWidth
-    const B1 = T1 + obj1.offsetHeight
-
-    const L2 = this.obj.offsetLeft
-    const T2 = this.obj.offsetTop
-    const R2 = L2 + this.obj.offsetWidth
-    const B2 = T2 + this.obj.offsetHeight
-
-    if (L1 >= R2 || T1 >= B2 || R1 <= L2 || B1 <= T2) {
-      return false
-    }
-    return true
   }
 }
