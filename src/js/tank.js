@@ -1,4 +1,5 @@
-import Bullet from './Bullet'
+import Bullet from './bullet'
+import Axis from './axis'
 /**
  * 坦克的控制类。
  * @param {string} 目标坦克.
@@ -40,9 +41,10 @@ export default class tank {
     if (!this.bullet) {
       let x = this.obj.offsetLeft + this.obj.offsetWidth / 2 - 4
       let y = this.obj.offsetTop + this.obj.offsetHeight / 2 - 4
+
       new Bullet(this.dir, x, y)
       this.bullet = setInterval(() => {
-        console.log(1)
+        // console.log(1)
       }, 1000)
     }
   }
@@ -73,7 +75,6 @@ export default class tank {
       this.animationStop()
     }
   }
-
   /**
      * 坦克移动方向动画
      */
@@ -121,9 +122,9 @@ export default class tank {
       this.obj.style.left = 0
     } else {
       this.obj.style.left = this.obj.offsetLeft - this.speed + 'px'
-      if (this.axis()) {
+      new Axis(this.obj).then(() => {
         this.obj.style.left = this.obj.offsetLeft + this.speed + 'px'
-      }
+      }).catch(() => {})
     }
     this.dir = 'left'
   }
@@ -136,9 +137,9 @@ export default class tank {
       this.obj.style.left = this.oParent.offsetWidth - this.obj.offsetWidth + 'px'
     } else {
       this.obj.style.left = this.obj.offsetLeft + this.speed + 'px'
-      if (this.axis()) {
+      new Axis(this.obj).then(() => {
         this.obj.style.left = this.obj.offsetLeft - this.speed + 'px'
-      }
+      }).catch(() => {})
     }
     this.dir = 'right'
   }
@@ -151,9 +152,9 @@ export default class tank {
       this.obj.style.top = 0
     } else {
       this.obj.style.top = this.obj.offsetTop - this.speed + 'px'
-      if (this.axis()) {
+      new Axis(this.obj).then(() => {
         this.obj.style.top = this.obj.offsetTop + this.speed + 'px'
-      }
+      }).catch(() => {})
     }
     this.dir = 'up'
   }
@@ -166,50 +167,10 @@ export default class tank {
       this.obj.style.top = this.oParent.offsetHeight - this.obj.offsetHeight + 'px'
     } else {
       this.obj.style.top = this.obj.offsetTop + this.speed + 'px'
-      if (this.axis()) {
+      new Axis(this.obj).then(() => {
         this.obj.style.top = this.obj.offsetTop - this.speed + 'px'
-      }
+      }).catch(() => {})
     }
     this.dir = 'down'
-  }
-
-  /**
-     * 坦克与墙的碰撞检测。
-     * @return {Boolean} true 碰上 false 没碰
-     */
-  axis () {
-    const wall = document.querySelectorAll('.wall')
-    const iron = document.querySelectorAll('.iron')
-    const allWall = [
-      ...wall,
-      ...iron
-    ]
-    for (let item of allWall) {
-      if (this.casks(item)) {
-        return true
-      }
-    }
-    return false
-  }
-
-  /**
-     * 碰撞检测。
-     * @return {Boolean}
-     */
-  casks (obj1) {
-    const L1 = obj1.offsetLeft
-    const T1 = obj1.offsetTop
-    const R1 = L1 + obj1.offsetWidth
-    const B1 = T1 + obj1.offsetHeight
-
-    const L2 = this.obj.offsetLeft
-    const T2 = this.obj.offsetTop
-    const R2 = L2 + this.obj.offsetWidth
-    const B2 = T2 + this.obj.offsetHeight
-
-    if (L1 >= R2 || T1 >= B2 || R1 <= L2 || B1 <= T2) {
-      return false
-    }
-    return true
   }
 }

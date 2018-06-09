@@ -85,7 +85,6 @@ export default class Game {
       e.preventDefault()
       this.key[e.keyCode] = false
       if (e.keyCode === 74) {
-        console.log(1)
         setTimeout(() => {
           clearInterval(this.p1.bullet)
           this.p1.bullet = null

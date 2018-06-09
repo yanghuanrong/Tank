@@ -1,4 +1,4 @@
-import Boom from './Boom'
+import Boom from './boom'
 export default class bullet {
   constructor (dir, x, y) {
     this.dir = dir
@@ -6,6 +6,7 @@ export default class bullet {
     this.y = y
     this.el = null
     this.speed = 3
+    this.time = null
     this.created()
   }
   created () {
@@ -17,54 +18,53 @@ export default class bullet {
     this.move()
   }
   move () {
-    let time = null
     switch (this.dir) {
       case 'up':
-        time = setInterval(() => {
+        this.time = setInterval(() => {
           this.y -= this.speed
           this.el.style.top = this.y + 'px'
 
           if (this.y <= 0 || this.axis()) {
-            clearInterval(time)
-            new Boom(this.el)
+            this.over()
           }
         }, 20)
         break
       case 'left':
-        time = setInterval(() => {
+        this.time = setInterval(() => {
           this.x -= this.speed
           this.el.style.left = this.x + 'px'
 
           if (this.x <= 0 || this.axis()) {
-            clearInterval(time)
-            new Boom(this.el)
+            this.over()
           }
         }, 20)
         break
       case 'down':
-        time = setInterval(() => {
+        this.time = setInterval(() => {
           this.y += this.speed
           this.el.style.top = this.y + 'px'
 
           if (this.y >= document.querySelector('#left').offsetHeight || this.axis()) {
-            clearInterval(time)
-            new Boom(this.el)
+            this.over()
           }
         }, 20)
         break
       case 'right':
-        time = setInterval(() => {
+        this.time = setInterval(() => {
           this.x += this.speed
           this.el.style.left = this.x + 'px'
 
           if (this.x >= document.querySelector('#left').offsetWidth || this.axis()) {
-            clearInterval(time)
-            new Boom(this.el)
+            this.over()
           }
         }, 20)
         break
       default:
     }
+  }
+  over () {
+    clearInterval(this.time)
+    new Boom(this.el)
   }
   /**
      * 坦克与墙的碰撞检测。

@@ -1,3 +1,3 @@
-import Game from './js/Game'
+import Game from './js/game'
 
 new Game().GameStart()
