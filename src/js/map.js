@@ -1,5 +1,3 @@
-import { wrap } from './utilis'
-
 const map = {
   level_1: {
     gkType: [
@@ -78,7 +76,7 @@ class drawMap {
         el.appendChild(ele)
       }
     }
-    wrap.appendChild(el)
+    document.querySelector('#left').appendChild(el)
   }
 }
 

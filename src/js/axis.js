@@ -1,10 +1,10 @@
-import { wall, iron } from './utilis'
-
 export default class Axis {
   constructor (el) {
     return this.axis(el)
   }
-  static axis (el) {
+  axis (el) {
+    const wall = document.querySelectorAll('.wall')
+    const iron = document.querySelectorAll('.iron')
     const allWall = [
       ...wall,
       ...iron
@@ -18,12 +18,11 @@ export default class Axis {
       reject(el)
     })
   }
-
   /**
      * 碰撞检测。
      * @return {Boolean}
      */
-  static casks (obj1, obj2) {
+  casks (obj1, obj2) {
     const L1 = obj1.offsetLeft
     const T1 = obj1.offsetTop
     const R1 = L1 + obj1.offsetWidth
