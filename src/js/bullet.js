@@ -8,6 +8,7 @@ export default class bullet {
     this.speed = 3
     this.time = null
     this.moveTime = 20
+    this.fn = []
     this.created()
   }
   created () {
@@ -65,6 +66,12 @@ export default class bullet {
   over () {
     clearInterval(this.time)
     new Boom(this.el)
+    this.fn.map(item => {
+      item()
+    })
+  }
+  evas (fn) {
+    this.fn.push(fn)
   }
   /**
      * 坦克与墙的碰撞检测。

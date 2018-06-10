@@ -18,8 +18,7 @@ export default class tank {
     this.obj = this.created(id, className, x, y)
     this.speed = 2 // 移动速度
     this.animation = null
-    this.bulletSwitch = null // 发射子弹的开关；
-    this.bulletNum = 1 // 可以存在的子弹数量；
+    this.bulletNum = [] // 可以存在的子弹数量；
   }
   /**
      * 创建坦克元素
@@ -42,11 +41,17 @@ export default class tank {
     if (!this.bullet) {
       let x = this.obj.offsetLeft + this.obj.offsetWidth / 2 - 4
       let y = this.obj.offsetTop + this.obj.offsetHeight / 2 - 4
-
-      new Bullet(this.dir, x, y)
-      this.bullet = setInterval(() => {
-        // console.log(1)
-      }, 1000)
+      let bullet1 = null
+      if (this.bulletNum.length < 1) {
+        bullet1 = new Bullet(this.dir, x, y)
+        this.bulletNum.push(bullet1)
+      }
+      try {
+        bullet1.evas(() => {
+          this.bulletNum = []
+        })
+      } catch (e) {
+      }
     }
   }
   /**
