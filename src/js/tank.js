@@ -7,6 +7,7 @@ import Axis from './axis'
 export default class tank {
   constructor ({life, dir, parent, id, className, status, x, y, t, r, b, l}) {
     this.life = life
+    this.befdir = dir
     this.dir = dir
     this.oParent = document.querySelector(`#${parent}`)
     this.status = status
@@ -53,6 +54,7 @@ export default class tank {
      * @param {string} 移动方向
      */
   move (dir) {
+    this.setPositon(dir)
     switch (dir) {
       case 'up':
         this.moveUp()
@@ -115,6 +117,26 @@ export default class tank {
     this.animation = null
   }
   /**
+     * 转向的时候重置位置
+     */
+  setPositon (dir) {
+    if (this.dir !== dir) {
+      if (dir === 'left' || dir === 'right') {
+        if (!(this.obj.offsetLeft % 16)) {
+          let iTop = parseInt((this.obj.offsetTop + 8) / 16)
+          iTop = iTop * 16
+          this.obj.style.top = iTop + 'px'
+        }
+      } else if (dir === 'up' || dir === 'down') {
+        if (!(this.obj.offsetTop % 16)) {
+          let iLeft = parseInt((this.obj.offsetLeft + 8) / 16)
+          iLeft = iLeft * 16
+          this.obj.style.left = iLeft + 'px'
+        }
+      }
+    }
+  }
+  /**
      * 左移动
      */
   moveLeft () {
@@ -134,7 +156,7 @@ export default class tank {
      */
   moveRight () {
     if (this.obj.offsetLeft >= this.oParent.offsetWidth - this.obj.offsetWidth) {
-      this.obj.style.left = 0 - this.obj.offsetWidth + 'px'
+      this.obj.style.left = this.oParent.offsetWidth - this.obj.offsetWidth + 'px'
     } else {
       this.obj.style.left = this.obj.offsetLeft + this.speed + 'px'
       new Axis(this.obj).then(() => {
