@@ -21,10 +21,31 @@ p.info{width:496px; height:40px; margin:20px auto; line-height:20px;}
 
 .tank { background-image: url(../images/Tank.png); background-repeat: no-repeat; overflow: hidden; position: absolute; width: 32px; height: 32px; z-index: 3; top:384px; left:128px; }
 
+.tank.create{
+	animation:tank .2s steps(1, start) infinite;
+}
 
-.bullet { background: url(../images/bullet.gif) no-repeat; width: 8px; height: 8px; position: absolute; z-index: 4;}
+.bullet { background: url(../images/bullet.gif) no-repeat; width: 8px; height: 8px; position: absolute; z-index: 2;}
 .bullet.up{  background-position: 0 0}
 .bullet.right{  background-position: -8px 0}
 .bullet.down{  background-position: -16px 0}
 .bullet.left{  background-position: -24px 0}
 .Boom { background-image: url(../images/Boom.png); width: 64px; height: 64px; position: absolute; z-index: 4; }
+
+@keyframes tank{
+	0%{
+		background-position: -3680px 0;
+	}
+	25%{
+		background-position: -3648px 0;
+	}
+	50%{
+		background-position: -3616px 0;
+	}
+	75%{
+		background-position: -3584px 0;
+	}
+	100%{
+		background-position: -3680px 0;
+	}
+}

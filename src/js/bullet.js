@@ -1,6 +1,6 @@
-import Boom from './boom'
+import Boom from './Boom'
 export default class bullet {
-  constructor (dir, x, y) {
+  constructor (dir, x, y, status, speed, type) {
     this.dir = dir
     this.x = x
     this.y = y
@@ -8,6 +8,8 @@ export default class bullet {
     this.speed = 3
     this.time = null
     this.moveTime = 20
+	this.type = type
+	this.status = status
     this.fn = []
     this.created()
   }
@@ -80,14 +82,21 @@ export default class bullet {
   axis () {
     const wall = document.querySelectorAll('.wall')
     const iron = document.querySelectorAll('.iron')
+	const tank = document.querySelectorAll('.tank')
     const allWall = [
       ...wall,
-      ...iron
+      ...iron,
+	  ...tank,
     ]
     for (let item of allWall) {
       if (this.casks(item)) {
-        document.querySelector('#left').removeChild(item)
-        return true
+		  if(item.className == 'tank' && item.type == this.type){
+		  	return
+		  }
+		if(item.className == "wall" || this.status >= 3 || item.className == 'tank' && item.type != this.type) {
+			document.querySelector('#left').removeChild(item)
+		}
+		return true
       }
     }
     return false

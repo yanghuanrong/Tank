@@ -1,73 +1,43 @@
 import '../style/style.css'
-import Map from './map'
-import Tank from './tank'
-
-// 初始化p1玩家数据
-const P1_TANK = {
-  life: 3, // 生命数
-  dir: 'up', // 初始方向
-  id: 'me', // id
-  parent: 'left', // 父级元素
-  className: 'tank', // class
-  status: 0, // 0 普通状态；1 一星状态； 2 二星状态； 3 三星状态
-  x: 128, // 初始的x轴坐标
-  y: 384, // 初始的y轴坐标
-  // 上移动时的动画
-  t: [
-    [
-      0, -448
-    ],
-    [
-      -32, -480
-    ]
-  ],
-  // 右移动时的动画
-  r: [
-    [
-      -896, -1344
-    ],
-    [
-      -928, -1376
-    ]
-  ],
-  // 下移动时的动画
-  b: [
-    [
-      -1792, -2240
-    ],
-    [
-      -1825, -2273
-    ]
-  ],
-  // 左移动时的动画
-  l: [
-    [
-      -2688, -3136
-    ],
-    [
-      -2720, -3168
-    ]
-  ]
-}
+import MapData from './MapData'
+import CreateMap from './CreateMap'
+import * as TankData from './TankData'
+import TankNPC from './TankNPC'
+import Tank from './Tank'
 
 export default class Game {
   constructor () {
-    this.key = {} // 键盘按键对象
-    this.level = 1 // 当前正在游戏的关卡
+    this.level = 1
+		this.key = {} // 键盘按键对象
+		this.coords = [{x: 0, y: 0}, {x: 192, y: 0}, {x: 384, y: 0}],
+		this.npc = []
   }
 
   // 初始化
   init () {
-    new Map(this.level)
+	const MAP = MapData[this.level].gkType
+	const TANK = MapData[this.level].tankType
+		//  初始化地图
+    new CreateMap(MAP)
+	//  初始化敌机
+		
+	for(let i = 0; i<3; i++){
+		const NPC = TankData[`B${TANK[i]}_TANK`]
+		NPC.x = this.coords[i % 3].x
+		NPC.y = this.coords[i % 3].y
+		this.npc.push(new TankNPC(NPC))
+	}
+	
+	
   }
 
   // 游戏开始
   GameStart () {
     this.init()
-    this.p1 = new Tank(P1_TANK)
+    this.p1 = new Tank(TankData['P1_TANK'])
     this.time = setInterval(() => {
       this.updateGame()
-    }, 32)
+    }, 16)
   }
 
   // 键盘按下
@@ -120,6 +90,9 @@ export default class Game {
 
   // 更新游戏
   updateGame () {
+	this.npc.map(item => {
+		item.start()
+	})
     this.ctrlPlayers()
   }
 }
