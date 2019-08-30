@@ -131,7 +131,8 @@ class TankNPC {
 				newDirArr.push(item)
 			}
 		})
-		this.dir = newDirArr[Math.floor(Math.random()*2)]
+		
+		this.dir = newDirArr[Math.floor(Math.random()*3)]
 		this.setPositon(this.dir)
 		this[this.dir + 'Move']()
 	}
@@ -145,7 +146,7 @@ class TankNPC {
 		]
 		let type = false
 		for (let item of allWall) {
-			if (this.casks(item, this.el)) {
+			if (this.casks(item, this.el) && item !== this.el) {
 				type = true
 			}
 		}
@@ -153,17 +154,15 @@ class TankNPC {
 	}
 
 	casks(obj1, obj2) {
-		const O1 = obj1.getBoundingClientRect()
-		const O2 = obj2.getBoundingClientRect()
-		const L1 = O1.left
-		const T1 = O1.top
-		const R1 = O1.right
-		const B1 = O1.bottom
+		const L1 = obj1.offsetLeft
+		const T1 = obj1.offsetTop
+		const R1 = L1 + obj1.offsetWidth
+		const B1 = T1 + obj1.offsetHeight
 
-		const L2 = O2.left
-		const T2 = O2.top
-		const R2 = O2.right
-		const B2 = O2.bottom
+		const L2 = obj2.offsetLeft
+		const T2 = obj2.offsetTop
+		const R2 = L2 + obj2.offsetWidth
+		const B2 = T2 + obj2.offsetHeight
 
 		if (L1 >= R2 || T1 >= B2 || R1 <= L2 || B1 <= T2) {
 			return false
@@ -172,6 +171,8 @@ class TankNPC {
 	}
 	start() {
 		this[this.dir + 'Move']()
+		
+
 		this.animationStar()
 
 		// let dirArr = ['up', 'down', 'left', 'right']

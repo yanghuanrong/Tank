@@ -21,7 +21,7 @@ export default class Game {
     new CreateMap(MAP)
 	//  初始化敌机
 		
-	for(let i = 0; i<1; i++){
+	for(let i = 0; i<3; i++){
     const NPC = TankData[`B${TANK[i]}_TANK`]
     // const NPC = TankData['P1_TANK']
 		NPC.x = this.coords[i % 3].x
