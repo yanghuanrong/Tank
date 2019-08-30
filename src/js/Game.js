@@ -21,10 +21,13 @@ export default class Game {
     new CreateMap(MAP)
 	//  初始化敌机
 		
-	for(let i = 0; i<3; i++){
-		const NPC = TankData[`B${TANK[i]}_TANK`]
-		NPC.x = this.coords[i % 3].x
-		NPC.y = this.coords[i % 3].y
+	for(let i = 0; i<1; i++){
+    // const NPC = TankData[`B${TANK[i]}_TANK`]
+    const NPC = TankData['P1_TANK']
+		// NPC.x = this.coords[i % 3].x
+    // NPC.y = this.coords[i % 3].y
+    NPC.type = 'NPC'
+    NPC.dir = 'up'
 		this.npc.push(new TankNPC(NPC))
 	}
 	
@@ -34,10 +37,11 @@ export default class Game {
   // 游戏开始
   GameStart () {
     this.init()
-    this.p1 = new Tank(TankData['P1_TANK'])
-    this.time = setInterval(() => {
-      this.updateGame()
-    }, 16)
+    // this.p1 = new Tank(TankData['P1_TANK'])
+    // this.time = setInterval(() => {
+    //   this.updateGame()
+    // }, 16)
+    requestAnimationFrame(this.updateGame.bind(this))
   }
 
   // 键盘按下
@@ -73,8 +77,6 @@ export default class Game {
       this.p1.move('down')
     } else if (this.key['65']) {
       this.p1.move('left')
-    } else {
-      this.p1.animationStop()
     }
     if (this.key['74']) {
       this.p1.bullets()
@@ -90,9 +92,10 @@ export default class Game {
 
   // 更新游戏
   updateGame () {
-	this.npc.map(item => {
-		item.start()
-	})
+    this.npc.forEach(item => {
+      item.start()
+    })
     this.ctrlPlayers()
+    requestAnimationFrame(this.updateGame.bind(this))
   }
 }
