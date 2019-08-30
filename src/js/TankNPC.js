@@ -70,27 +70,28 @@ class TankNPC {
 	}
 
 	setPositon(dir) {
-		if (this.dir !== dir) {
-			if (dir === 'left' || dir === 'right') {
-				if (!(this.el.offsetLeft % 16)) {
-					let iTop = parseInt((this.el.offsetTop + 8) / 16)
-					iTop = iTop * 16
-					this.el.style.top = iTop + 'px'
-				}
-			} else if (dir === 'up' || dir === 'down') {
-				if (!(this.el.offsetTop % 16)) {
-					let iLeft = parseInt((this.el.offsetLeft + 8) / 16)
-					iLeft = iLeft * 16
-					this.el.style.left = iLeft + 'px'
-				}
+		if (dir === 'left' || dir === 'right') {
+			if (!(this.el.offsetLeft % 16)) {
+				let iTop = parseInt((this.el.offsetTop + 8) / 16)
+				iTop = iTop * 16
+				this.y = iTop
+				this.el.style.top = iTop + 'px'
+			}
+		} else if (dir === 'up' || dir === 'down') {
+			if (!(this.el.offsetTop % 16)) {
+				let iLeft = parseInt((this.el.offsetLeft + 8) / 16)
+				iLeft = iLeft * 16
+				this.x = iLeft
+				this.el.style.left = iLeft + 'px'
 			}
 		}
 	}
 
 	leftMove() {
-		this.x += -this.speed
+		this.x = this.x - this.speed
 		if (this.x <= STAGE_L || this.axis()) {
 			this.x -= -this.speed
+			this.restDir()
 		}
 		this.el.style.left = this.x + 'px'
 	}
@@ -99,6 +100,7 @@ class TankNPC {
 		this.x += this.speed
 		if (this.x >= STAGE_R || this.axis()) {
 			this.x -= this.speed
+			this.restDir()
 		}
 		this.el.style.left = this.x + 'px'
 	}
@@ -106,7 +108,8 @@ class TankNPC {
 	upMove() {
 		this.y += -this.speed
 		if (this.y <= STAGE_T || this.axis()) {
-			this.y -= -this.speed
+			this.y = this.y + this.speed 
+			this.restDir()
 		}
 		this.el.style.top = this.y + 'px'
 	}
@@ -115,8 +118,22 @@ class TankNPC {
 		this.y += this.speed
 		if (this.y >= STAGE_B || this.axis()) {
 			this.y -= this.speed
+			this.restDir()
 		}
 		this.el.style.top = this.y + 'px'
+	}
+
+	restDir(){
+		const dirArr = ['up', 'down', 'left', 'right']
+		const newDirArr = [] 
+		dirArr.map((item) => {
+			if(item !== this.dir){
+				newDirArr.push(item)
+			}
+		})
+		this.dir = newDirArr[Math.floor(Math.random()*2)]
+		this.setPositon(this.dir)
+		this[this.dir + 'Move']()
 	}
 
 	axis() {
@@ -155,9 +172,10 @@ class TankNPC {
 	}
 	start() {
 		this[this.dir + 'Move']()
+		this.animationStar()
+
 		// let dirArr = ['up', 'down', 'left', 'right']
 		// this.move(this.dir)
-		// this.animationStar()
 		// this.bullets()
 	}
 

@@ -22,12 +22,12 @@ export default class Game {
 	//  初始化敌机
 		
 	for(let i = 0; i<1; i++){
-    // const NPC = TankData[`B${TANK[i]}_TANK`]
-    const NPC = TankData['P1_TANK']
-		// NPC.x = this.coords[i % 3].x
-    // NPC.y = this.coords[i % 3].y
+    const NPC = TankData[`B${TANK[i]}_TANK`]
+    // const NPC = TankData['P1_TANK']
+		NPC.x = this.coords[i % 3].x
+    NPC.y = this.coords[i % 3].y
     NPC.type = 'NPC'
-    NPC.dir = 'up'
+    // NPC.dir = 'up'
 		this.npc.push(new TankNPC(NPC))
 	}
 	
