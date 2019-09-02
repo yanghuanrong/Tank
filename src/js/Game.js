@@ -27,6 +27,11 @@ export default class Game {
 		NPC.x = this.coords[i % 3].x
     NPC.y = this.coords[i % 3].y
     NPC.type = 'NPC'
+    if(i === 0){
+      NPC.dir = 'right'
+    } else {
+      NPC.dir = 'left'
+    }
     // NPC.dir = 'up'
 		this.npc.push(new TankNPC(NPC))
 	}
