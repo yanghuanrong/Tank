@@ -15,37 +15,33 @@ export default class Game {
 
   // 初始化
   init () {
-	const MAP = MapData[this.level].gkType
-	const TANK = MapData[this.level].tankType
-		//  初始化地图
+    const MAP = MapData[this.level].gkType
+    const TANK = MapData[this.level].tankType
+      //  初始化地图
     new CreateMap(MAP)
-	//  初始化敌机
-		
-	for(let i = 0; i<3; i++){
-    const NPC = TankData[`B${TANK[i]}_TANK`]
-    // const NPC = TankData['P1_TANK']
-		NPC.x = this.coords[i % 3].x
-    NPC.y = this.coords[i % 3].y
-    NPC.type = 'NPC'
-    if(i === 0){
-      NPC.dir = 'right'
-    } else {
-      NPC.dir = 'left'
+    //  初始化敌机
+    for(let i = 0; i<3; i++){
+      const NPC = TankData[`B${TANK[i]}_TANK`]
+      // const NPC = TankData['P1_TANK']
+      NPC.x = this.coords[i % 3].x
+      NPC.y = this.coords[i % 3].y
+      NPC.type = 'NPC'
+      if(i === 0){
+        NPC.dir = 'right'
+      } else {
+        NPC.dir = 'left'
+      }
+      // NPC.dir = 'up'
+      this.npc.push(new TankNPC(NPC))
     }
-    // NPC.dir = 'up'
-		this.npc.push(new TankNPC(NPC))
-	}
 	
-	
+  
+    this.p1 = new Tank(TankData['P1_TANK'])
   }
 
   // 游戏开始
   GameStart () {
     this.init()
-    // this.p1 = new Tank(TankData['P1_TANK'])
-    // this.time = setInterval(() => {
-    //   this.updateGame()
-    // }, 16)
     requestAnimationFrame(this.updateGame.bind(this))
   }
 
@@ -75,13 +71,13 @@ export default class Game {
   // 玩家一控制
   OnePlayer () {
     if (this.key['87']) {
-      this.p1.move('up')
+      this.p1.upMove()
     } else if (this.key['68']) {
-      this.p1.move('right')
+      this.p1.rightMove()
     } else if (this.key['83']) {
-      this.p1.move('down')
+      this.p1.downMove()
     } else if (this.key['65']) {
-      this.p1.move('left')
+      this.p1.leftMove()
     }
     if (this.key['74']) {
       this.p1.bullets()
@@ -100,6 +96,8 @@ export default class Game {
     this.npc.forEach(item => {
       item.start()
     })
+    this.p1.start()
+
     this.ctrlPlayers()
     requestAnimationFrame(this.updateGame.bind(this))
   }

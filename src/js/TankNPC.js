@@ -1,8 +1,4 @@
-const STAGE = document.querySelector(`#left`)
-const STAGE_T = 0
-const STAGE_L = 0
-const STAGE_R = STAGE.offsetWidth - 32
-const STAGE_B = STAGE.offsetHeight - 32
+import {STAGE, STAGE_T, STAGE_L, STAGE_R, STAGE_B, random} from './utils'
 
 class TankNPC {
 	constructor(option) {
@@ -12,6 +8,8 @@ class TankNPC {
 		for (let k in option) {
 			this[k] = option[k]
 		}
+		this.count = 0
+		this.restCount = 100
 
 		let positions
 		switch (this.dir) {
@@ -29,7 +27,7 @@ class TankNPC {
 				break
 		}
 
-		let el = document.createElement('div')
+		const el = document.createElement('div')
 		el.className = 'tank'
 		el.style.top = this.y + 'px'
 		el.style.left = this.x + 'px'
@@ -71,12 +69,9 @@ class TankNPC {
 
 	leftMove() {
 		const initX = this.x
-		this.x = this.x - this.speed
-		if (this.x <= STAGE_L || this.axis()) {
+		this.x -= this.speed
+		if (this.x <= STAGE_L || this.axis() || this.axisTank()) {
 			this.x = initX
-			this.restDir()
-		}
-		if(this.axisTank()){
 			this.restDir()
 		}
 		this.el.style.left = this.x + 'px'
@@ -86,11 +81,8 @@ class TankNPC {
 		const initX = this.x
 
 		this.x += this.speed
-		if (this.x >= STAGE_R || this.axis()) {
+		if (this.x >= STAGE_R || this.axis() || this.axisTank()) {
 			this.x = initX
-			this.restDir()
-		}
-		if(this.axisTank()){
 			this.restDir()
 		}
 		this.el.style.left = this.x + 'px'
@@ -100,23 +92,19 @@ class TankNPC {
 		const initY = this.y
 		this.y += -this.speed
 
-		if (this.y <= STAGE_T || this.axis()) {
+		if (this.y <= STAGE_T || this.axis() || this.axisTank()) {
 			this.y = initY
 			this.restDir()
 		}
-		if(this.axisTank()){
-			this.restDir()
-		}
+		
 		this.el.style.top = this.y + 'px'
 	}
 
 	downMove() {
 		const initY = this.y
 		this.y += this.speed
-		if (this.y >= STAGE_B || this.axis()) {
-			this.restDir()
-		}
-		if(this.axisTank()){
+		if (this.y >= STAGE_B || this.axis() || this.axisTank()) {
+			this.y = initY
 			this.restDir()
 		}
 		this.el.style.top = this.y + 'px'
@@ -140,21 +128,16 @@ class TankNPC {
 		}
 	}
 
-	restDir(dir){
-
-		if(dir){
-			this.dir = dir
-		} else {
-			const dirArr = ['up', 'down', 'left', 'right']
-			const newDirArr = [] 
-			dirArr.map((item) => {
-				if(item !== this.dir){
-					newDirArr.push(item)
-				}
-			})
-			
-			this.dir = newDirArr[Math.floor(Math.random()*3)]
-		}
+	restDir(){
+		const dirArr = ['up', 'down', 'left', 'right']
+		const newDirArr = [] 
+		dirArr.map((item) => {
+			if(item !== this.dir){
+				newDirArr.push(item)
+			}
+		})
+		
+		this.dir = newDirArr[Math.floor(Math.random()*3)]
 		
 		this.setPositon(this.dir)
 		this[this.dir + 'Move']()
@@ -177,21 +160,6 @@ class TankNPC {
 		return type
 	}
 
-	axisTank(){
-		const tank = document.querySelectorAll('.tank')
-		for (let item of tank) {
-			const xVal = Math.abs(this.x - item.offsetLeft)
-			const yVal = Math.abs(this.y - item.offsetTop)
-
-			if (this.dir === 'left' || this.dir === 'right') {
-				if (xVal < 32 && xVal > 26 && yVal < 32) { return true; }
-			} else {
-				if (yVal < 32 && yVal > 26 && xVal < 32) { return true; }
-			}
-		}
-		return false
-	}
-
 	casks(obj1, obj2) {
 		const L1 = obj1.offsetLeft
 		const T1 = obj1.offsetTop
@@ -208,12 +176,35 @@ class TankNPC {
 		}
 		return true
 	}
+	
+	axisTank(){
+		const tank = document.querySelectorAll('.tank')
+		for (let item of tank) {
+			const xVal = Math.abs(this.x - item.offsetLeft)
+			const yVal = Math.abs(this.y - item.offsetTop)
+
+			if (this.dir === 'left' || this.dir === 'right') {
+				if (xVal < 32 && xVal > 26 && yVal < 32) { return true; }
+			} else {
+				if (yVal < 32 && yVal > 26 && xVal < 32) { return true; }
+			}
+		}
+		return false
+	}
+
 	start() {
 		this[this.dir + 'Move']()
 		this.animationStar()
+
+		this.count ++
+		if(this.count > this.restCount){
+			this.count = 0
+			this.restCount = random(80, 180)
+			console.log(this.restCount)
+			this.restDir()
+		}
 	}
-
-
 }
+
 
 export default TankNPC
