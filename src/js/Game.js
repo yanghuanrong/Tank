@@ -71,13 +71,13 @@ export default class Game {
   // 玩家一控制
   OnePlayer () {
     if (this.key['87']) {
-      this.p1.upMove()
+      this.p1.move('up')
     } else if (this.key['68']) {
-      this.p1.rightMove()
+      this.p1.move('right')
     } else if (this.key['83']) {
-      this.p1.downMove()
+      this.p1.move('down')
     } else if (this.key['65']) {
-      this.p1.leftMove()
+      this.p1.move('left')
     }
     if (this.key['74']) {
       this.p1.bullets()
@@ -96,7 +96,7 @@ export default class Game {
     this.npc.forEach(item => {
       item.start()
     })
-    this.p1.start()
+    // this.p1.start()
 
     this.ctrlPlayers()
     requestAnimationFrame(this.updateGame.bind(this))

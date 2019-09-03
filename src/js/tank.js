@@ -7,4 +7,14 @@ export default class tank extends TankNPC{
 	constructor(obj) {
 		super(obj)
 	}
+	restDir(){
+	}
+	move(dir){
+		if(this.dir !== dir){
+			this.setPositon(dir)
+		}
+		this.dir = dir
+		this[this.dir + 'Move']()
+		this.animationStar()
+	}
 }

@@ -8,6 +8,8 @@ class TankNPC {
 		for (let k in option) {
 			this[k] = option[k]
 		}
+		
+		this.dirIndex = 0
 		this.count = 0
 		this.restCount = 100
 
@@ -41,73 +43,83 @@ class TankNPC {
 
 	animationStar() {
 		let positions
-		let index = 0
 
-		setInterval(() => {
-			switch (this.dir) {
-				case 'left':
-					positions = this.l[this.status]
-					break
-				case 'right':
-					positions = this.r[this.status]
-					break
-				case 'up':
-					positions = this.t[this.status]
-					break
-				case 'down':
-					positions = this.b[this.status]
-					break
-			}
+		switch (this.dir) {
+			case 'left':
+				positions = this.l[this.status]
+				break
+			case 'right':
+				positions = this.r[this.status]
+				break
+			case 'up':
+				positions = this.t[this.status]
+				break
+			case 'down':
+				positions = this.b[this.status]
+				break
+		}
 
-			this.el.style.backgroundPosition = `${positions[index]}px 0`
-			index++
-			if (index >= positions.length) {
-				index = 0
-			}
-		}, 300)
+		this.el.style.backgroundPosition = `${positions[this.dirIndex]}px 0`
+		this.dirIndex++
+		if (this.dirIndex >= positions.length) {
+			this.dirIndex = 0
+		}
 	}
 
 	leftMove() {
-		const initX = this.x
-		this.x -= this.speed
-		if (this.x <= STAGE_L || this.axis() || this.axisTank()) {
-			this.x = initX
+		if (this.el.offsetLeft <= STAGE_L) {
+			this.el.style.left = STAGE_L
 			this.restDir()
+    } else {
+			this.el.style.left = this.el.offsetLeft - this.speed + 'px'
+			
+			if(this.axis() || this.axisTank()){
+				this.el.style.left = this.el.offsetLeft + this.speed + 'px'
+				this.restDir()
+			}
 		}
-		this.el.style.left = this.x + 'px'
 	}
 
 	rightMove() {
-		const initX = this.x
-
-		this.x += this.speed
-		if (this.x >= STAGE_R || this.axis() || this.axisTank()) {
-			this.x = initX
+		if (this.el.offsetLeft >= STAGE_R) {
+			this.el.style.left = STAGE_R
 			this.restDir()
+    } else {
+			this.el.style.left = this.el.offsetLeft + this.speed + 'px'
+			
+			if(this.axis() || this.axisTank()){
+				this.el.style.left = this.el.offsetLeft - this.speed + 'px'
+				this.restDir()
+			}
 		}
-		this.el.style.left = this.x + 'px'
 	}
 
 	upMove() {
-		const initY = this.y
-		this.y += -this.speed
-
-		if (this.y <= STAGE_T || this.axis() || this.axisTank()) {
-			this.y = initY
+		if (this.el.offsetTop <= STAGE_T) {
+			this.el.style.top = STAGE_T
 			this.restDir()
+    } else {
+			this.el.style.top = this.el.offsetTop - this.speed + 'px'
+			
+			if(this.axis() || this.axisTank()){
+				this.el.style.top = this.el.offsetTop + this.speed + 'px'
+				this.restDir()
+			}
 		}
-		
-		this.el.style.top = this.y + 'px'
 	}
 
 	downMove() {
-		const initY = this.y
-		this.y += this.speed
-		if (this.y >= STAGE_B || this.axis() || this.axisTank()) {
-			this.y = initY
+		if (this.el.offsetTop >= STAGE_B) {
+			this.el.style.top = STAGE_B
 			this.restDir()
+    } else {
+			this.el.style.top = this.el.offsetTop + this.speed + 'px'
+			
+			if(this.axis() || this.axisTank()){
+				this.el.style.top = this.el.offsetTop - this.speed + 'px'
+				this.restDir()
+			}
 		}
-		this.el.style.top = this.y + 'px'
 	}
 
 	setPositon(dir) {
@@ -151,13 +163,13 @@ class TankNPC {
 			...wall,
 			...iron,
 		]
-		let type = false
+		
 		for (let item of allWall) {
 			if (this.casks(item, this.el)) {
-				type = true
+				return true
 			}
 		}
-		return type
+		return false
 	}
 
 	casks(obj1, obj2) {
@@ -180,13 +192,13 @@ class TankNPC {
 	axisTank(){
 		const tank = document.querySelectorAll('.tank')
 		for (let item of tank) {
-			const xVal = Math.abs(this.x - item.offsetLeft)
-			const yVal = Math.abs(this.y - item.offsetTop)
+			const xVal = Math.abs(this.el.offsetLeft - item.offsetLeft)
+			const yVal = Math.abs(this.el.offsetTop - item.offsetTop)
 
 			if (this.dir === 'left' || this.dir === 'right') {
-				if (xVal < 32 && xVal > 26 && yVal < 32) { return true; }
+				if (xVal <= 32 && xVal > 26 && yVal <= 32) { return true; }
 			} else {
-				if (yVal < 32 && yVal > 26 && xVal < 32) { return true; }
+				if (yVal <= 32 && yVal > 26 && xVal <= 32) { return true; }
 			}
 		}
 		return false
@@ -200,7 +212,6 @@ class TankNPC {
 		if(this.count > this.restCount){
 			this.count = 0
 			this.restCount = random(80, 180)
-			console.log(this.restCount)
 			this.restDir()
 		}
 	}
