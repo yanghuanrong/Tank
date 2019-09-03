@@ -156,20 +156,23 @@ class TankNPC {
 	}
 
 	axis() {
-		const wall = document.querySelectorAll('.wall')
-		const iron = document.querySelectorAll('.iron')
+		// const wall = document.querySelectorAll('.wall')
+		// const iron = document.querySelectorAll('.iron')
+		// const tank = document.querySelectorAll('.tank')
 
-		const allWall = [
-			...wall,
-			...iron,
-		]
+		// const allWall = [
+		// 	...wall,
+		// 	...iron,
+		// 	...tank
+		// ]
 		
-		for (let item of allWall) {
-			if (this.casks(item, this.el)) {
-				return true
-			}
-		}
-		return false
+		// for (let item of allWall) {
+		// 	if (this.el !==item && this.casks(item, this.el)) {
+		// 		return true
+		// 	}
+		// }
+		// return false
+
 	}
 
 	casks(obj1, obj2) {
@@ -191,14 +194,17 @@ class TankNPC {
 	
 	axisTank(){
 		const tank = document.querySelectorAll('.tank')
+		
 		for (let item of tank) {
-			const xVal = Math.abs(this.el.offsetLeft - item.offsetLeft)
-			const yVal = Math.abs(this.el.offsetTop - item.offsetTop)
-
-			if (this.dir === 'left' || this.dir === 'right') {
-				if (xVal <= 32 && xVal > 26 && yVal <= 32) { return true; }
-			} else {
-				if (yVal <= 32 && yVal > 26 && xVal <= 32) { return true; }
+			if(item !== this.el){
+				const xVal = Math.abs(this.el.offsetLeft - item.offsetLeft)
+				const yVal = Math.abs(this.el.offsetTop - item.offsetTop)
+	
+				if (this.dir === 'left' || this.dir === 'right') {
+					if (xVal <= 32 && xVal > 26 && yVal <= 32) { return true; }
+				} else {
+					if (yVal <= 32 && yVal > 26 && xVal <= 32) { return true; }
+				}
 			}
 		}
 		return false

@@ -20,20 +20,20 @@ export default class Game {
       //  初始化地图
     new CreateMap(MAP)
     //  初始化敌机
-    for(let i = 0; i<3; i++){
-      const NPC = TankData[`B${TANK[i]}_TANK`]
-      // const NPC = TankData['P1_TANK']
-      NPC.x = this.coords[i % 3].x
-      NPC.y = this.coords[i % 3].y
-      NPC.type = 'NPC'
-      if(i === 0){
-        NPC.dir = 'right'
-      } else {
-        NPC.dir = 'left'
-      }
-      // NPC.dir = 'up'
-      this.npc.push(new TankNPC(NPC))
-    }
+    // for(let i = 0; i<3; i++){
+    //   const NPC = TankData[`B${TANK[i]}_TANK`]
+    //   // const NPC = TankData['P1_TANK']
+    //   NPC.x = this.coords[i % 3].x
+    //   NPC.y = this.coords[i % 3].y
+    //   NPC.type = 'NPC'
+    //   if(i === 0){
+    //     NPC.dir = 'right'
+    //   } else {
+    //     NPC.dir = 'left'
+    //   }
+    //   // NPC.dir = 'up'
+    //   this.npc.push(new TankNPC(NPC))
+    // }
 	
   
     this.p1 = new Tank(TankData['P1_TANK'])
