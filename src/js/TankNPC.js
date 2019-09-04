@@ -126,9 +126,9 @@ class TankNPC {
 			this.el.style.top = STAGE_B
 			this.restDir()
     } else {
-			if(this.axis()){
+			if (this.axis()) {
 				this.restDir()
-			} if(this.axisTank()){
+			} else if(this.axisTank()){
 				if(this.type === 'NPC'){
 					this.el.style.top = this.el.offsetTop - this.speed + 'px'
 				}
@@ -237,17 +237,41 @@ class TankNPC {
 				// 	if (yVal <= 32 && yVal > 26 && xVal <= 32) { return true; }
 				// }
 
+				// if (this.dir === 'left' || this.dir === 'right') {
+				// 	if (xVal <= 32 && yVal <= 16 && xVal > 26) { return true; }
+				// } else {
+				// 	if (yVal <= 32 && xVal <= 16 && yVal > 26) { return true; }
+				// }
+
 				if (this.dir === 'left' || this.dir === 'right') {
-					if (xVal <= 32 && yVal <= 16 && xVal > 26) { return true; }
+					if (xVal < 32 && xVal > 26 && yVal < 32) { return true; }
 				} else {
-					if (yVal <= 32 && xVal <= 16 && yVal > 26) { return true; }
+					if (yVal < 32 && yVal > 26 && xVal < 32) { return true; }
 				}
+				
 
 			}
 		}
 		return false
 	}
 	
+	casks (obj1) {
+    const L1 = obj1.offsetLeft
+    const T1 = obj1.offsetTop
+    const R1 = L1 + obj1.offsetWidth
+    const B1 = T1 + obj1.offsetHeight
+
+    const L2 = this.el.offsetLeft
+    const T2 = this.el.offsetTop
+    const R2 = L2 + this.el.offsetWidth
+    const B2 = T2 + this.el.offsetHeight
+
+    if (L1 >= R2 || T1 >= B2 || R1 <= L2 || B1 <= T2) {
+      return false
+    }
+    return true
+  }
+
 	start() {
 		this[this.dir + 'Move']()
 		this.animationStar()
