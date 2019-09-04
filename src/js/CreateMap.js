@@ -1,10 +1,15 @@
-/**
- * 渲染当前关卡的地图。
- * @param {json} 接收地图数据.
- * @param {number} 接收目前正在玩的关卡。
- */
+import MapData from './MapData'
+import {STAGE} from './utils'
+
 class drawMap {
-  constructor (gkType) {
+  constructor () {
+		
+	}
+	render(level){
+		STAGE.innerHTML = ''
+		this.mapData = MapData[level].gkType
+		this.tankData = MapData[level].tankType
+		const gkType = this.mapData
 		let el = document.createDocumentFragment()
 		for (let crs in gkType) {
 			for (let col in gkType[crs]) {
@@ -41,8 +46,9 @@ class drawMap {
 				el.appendChild(ele)
 			}
 		}
-		document.querySelector('#left').appendChild(el)
-  }
+		STAGE.appendChild(el)
+	}
 }
 
-export default drawMap
+
+export default new drawMap()

@@ -8,6 +8,7 @@ export default class tank extends TankNPC{
 		super(obj)
 	}
 	restDir(){
+		
 	}
 	move(dir){
 		if(this.dir !== dir){

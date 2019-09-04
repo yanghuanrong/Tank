@@ -1,4 +1,5 @@
 import {STAGE, STAGE_T, STAGE_L, STAGE_R, STAGE_B, random} from './utils'
+import map from './CreateMap'
 
 class TankNPC {
 	constructor(option) {
@@ -71,11 +72,10 @@ class TankNPC {
 			this.el.style.left = STAGE_L
 			this.restDir()
     } else {
-			this.el.style.left = this.el.offsetLeft - this.speed + 'px'
-			
 			if(this.axis() || this.axisTank()){
-				this.el.style.left = this.el.offsetLeft + this.speed + 'px'
 				this.restDir()
+			} else{
+				this.el.style.left = this.el.offsetLeft - this.speed + 'px'
 			}
 		}
 	}
@@ -85,11 +85,10 @@ class TankNPC {
 			this.el.style.left = STAGE_R
 			this.restDir()
     } else {
-			this.el.style.left = this.el.offsetLeft + this.speed + 'px'
-			
 			if(this.axis() || this.axisTank()){
-				this.el.style.left = this.el.offsetLeft - this.speed + 'px'
 				this.restDir()
+			} else {
+				this.el.style.left = this.el.offsetLeft + this.speed + 'px'
 			}
 		}
 	}
@@ -99,11 +98,10 @@ class TankNPC {
 			this.el.style.top = STAGE_T
 			this.restDir()
     } else {
-			this.el.style.top = this.el.offsetTop - this.speed + 'px'
-			
 			if(this.axis() || this.axisTank()){
-				this.el.style.top = this.el.offsetTop + this.speed + 'px'
 				this.restDir()
+			} else {
+				this.el.style.top = this.el.offsetTop - this.speed + 'px'
 			}
 		}
 	}
@@ -113,11 +111,11 @@ class TankNPC {
 			this.el.style.top = STAGE_B
 			this.restDir()
     } else {
-			this.el.style.top = this.el.offsetTop + this.speed + 'px'
 			
 			if(this.axis() || this.axisTank()){
-				this.el.style.top = this.el.offsetTop - this.speed + 'px'
 				this.restDir()
+			} else {
+				this.el.style.top = this.el.offsetTop + this.speed + 'px'
 			}
 		}
 	}
@@ -141,6 +139,22 @@ class TankNPC {
 	}
 
 	restDir(){
+
+		switch (this.dir) {
+			case 'left':
+				this.el.style.left = this.el.offsetLeft + this.speed + 'px'
+				break
+			case 'right':
+				this.el.style.left = this.el.offsetLeft - this.speed + 'px'
+				break
+			case 'up':
+				this.el.style.top = this.el.offsetTop + this.speed + 'px'
+				break
+			case 'down':
+				this.el.style.top = this.el.offsetTop - this.speed + 'px'
+				break
+		}
+
 		const dirArr = ['up', 'down', 'left', 'right']
 		const newDirArr = [] 
 		dirArr.map((item) => {
@@ -156,40 +170,54 @@ class TankNPC {
 	}
 
 	axis() {
-		// const wall = document.querySelectorAll('.wall')
-		// const iron = document.querySelectorAll('.iron')
-		// const tank = document.querySelectorAll('.tank')
-
-		// const allWall = [
-		// 	...wall,
-		// 	...iron,
-		// 	...tank
-		// ]
-		
-		// for (let item of allWall) {
-		// 	if (this.el !==item && this.casks(item, this.el)) {
-		// 		return true
-		// 	}
-		// }
-		// return false
-
-	}
-
-	casks(obj1, obj2) {
-		const L1 = obj1.offsetLeft
-		const T1 = obj1.offsetTop
-		const R1 = L1 + obj1.offsetWidth
-		const B1 = T1 + obj1.offsetHeight
-
-		const L2 = obj2.offsetLeft
-		const T2 = obj2.offsetTop
-		const R2 = L2 + obj2.offsetWidth
-		const B2 = T2 + obj2.offsetHeight
-
-		if (L1 >= R2 || T1 >= B2 || R1 <= L2 || B1 <= T2) {
+		const Ban = (data) => {
+			for(let item of data){
+				if(item === 1 || item === 2 || item === 7){
+					return true
+				}
+			}
 			return false
 		}
-		return true
+
+		if (!(this.el.offsetLeft % 16)) {
+			const row = parseInt((this.el.offsetTop + 8) / 16)
+
+			if(this.dir === 'left'){
+				const col = parseInt((this.el.offsetLeft + 8) / 16) - 1
+
+				const L1 = map.mapData[row][col]
+				const L2 = map.mapData[row + 1][col]
+				return Ban([L1, L2])
+			}
+			if(this.dir === 'right'){
+				const col = parseInt((this.el.offsetLeft + 8) / 16) + 2
+				
+				const L1 = map.mapData[row][col]
+				const L2 = map.mapData[row + 1][col]
+				return Ban([L1, L2])
+			}
+		}
+
+		if (!(this.el.offsetTop % 16)) {
+			const col = parseInt((this.el.offsetLeft + 8) / 16)
+
+			if(this.dir === 'up'){
+				const row = parseInt((this.el.offsetTop + 8) / 16) - 1
+
+				const L1 = map.mapData[row][col]
+				const L2 = map.mapData[row][col + 1]
+				return Ban([L1, L2])
+			}
+			if(this.dir === 'down'){
+				const row = parseInt((this.el.offsetTop + 8) / 16) + 2
+				
+				const L1 = map.mapData[row][col]
+				const L2 = map.mapData[row][col + 1]
+				return Ban([L1, L2])
+			}
+		}
+
+		return false
 	}
 	
 	axisTank(){
@@ -200,16 +228,23 @@ class TankNPC {
 				const xVal = Math.abs(this.el.offsetLeft - item.offsetLeft)
 				const yVal = Math.abs(this.el.offsetTop - item.offsetTop)
 	
+				// if (this.dir === 'left' || this.dir === 'right') {
+				// 	if (xVal <= 32 && xVal > 26 && yVal <= 32) { return true; }
+				// } else {
+				// 	if (yVal <= 32 && yVal > 26 && xVal <= 32) { return true; }
+				// }
+
 				if (this.dir === 'left' || this.dir === 'right') {
-					if (xVal <= 32 && xVal > 26 && yVal <= 32) { return true; }
+					if (xVal <= 32 && yVal <= 16 && xVal > 26) { return true; }
 				} else {
-					if (yVal <= 32 && yVal > 26 && xVal <= 32) { return true; }
+					if (yVal <= 32 && xVal <= 16 && yVal > 26) { return true; }
 				}
+
 			}
 		}
 		return false
 	}
-
+	
 	start() {
 		this[this.dir + 'Move']()
 		this.animationStar()
