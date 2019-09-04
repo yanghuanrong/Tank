@@ -72,9 +72,14 @@ class TankNPC {
 			this.el.style.left = STAGE_L
 			this.restDir()
     } else {
-			if(this.axis() || this.axisTank()){
+			if(this.axis()){
 				this.restDir()
-			} else{
+			} else if( this.axisTank()) {
+				if(this.type === 'NPC'){
+					this.el.style.left = this.el.offsetLeft + this.speed + 'px'
+				}
+				this.restDir()
+			} else {
 				this.el.style.left = this.el.offsetLeft - this.speed + 'px'
 			}
 		}
@@ -85,7 +90,12 @@ class TankNPC {
 			this.el.style.left = STAGE_R
 			this.restDir()
     } else {
-			if(this.axis() || this.axisTank()){
+			if(this.axis()){
+				this.restDir()
+			}else if(this.axisTank()){
+				if(this.type === 'NPC'){
+					this.el.style.left = this.el.offsetLeft - this.speed + 'px'
+				}
 				this.restDir()
 			} else {
 				this.el.style.left = this.el.offsetLeft + this.speed + 'px'
@@ -98,7 +108,12 @@ class TankNPC {
 			this.el.style.top = STAGE_T
 			this.restDir()
     } else {
-			if(this.axis() || this.axisTank()){
+			if(this.axis()){
+				this.restDir()
+			} else if(this.axisTank()){
+				if(this.type === 'NPC'){
+					this.el.style.top = this.el.offsetTop + this.speed + 'px'
+				}
 				this.restDir()
 			} else {
 				this.el.style.top = this.el.offsetTop - this.speed + 'px'
@@ -111,8 +126,12 @@ class TankNPC {
 			this.el.style.top = STAGE_B
 			this.restDir()
     } else {
-			
-			if(this.axis() || this.axisTank()){
+			if(this.axis()){
+				this.restDir()
+			} if(this.axisTank()){
+				if(this.type === 'NPC'){
+					this.el.style.top = this.el.offsetTop - this.speed + 'px'
+				}
 				this.restDir()
 			} else {
 				this.el.style.top = this.el.offsetTop + this.speed + 'px'
@@ -139,22 +158,6 @@ class TankNPC {
 	}
 
 	restDir(){
-
-		switch (this.dir) {
-			case 'left':
-				this.el.style.left = this.el.offsetLeft + this.speed + 'px'
-				break
-			case 'right':
-				this.el.style.left = this.el.offsetLeft - this.speed + 'px'
-				break
-			case 'up':
-				this.el.style.top = this.el.offsetTop + this.speed + 'px'
-				break
-			case 'down':
-				this.el.style.top = this.el.offsetTop - this.speed + 'px'
-				break
-		}
-
 		const dirArr = ['up', 'down', 'left', 'right']
 		const newDirArr = [] 
 		dirArr.map((item) => {
